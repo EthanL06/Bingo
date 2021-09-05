@@ -88,8 +88,8 @@ public class BingoSimulation {
         return randomNum;
     }
 
-    public int[][] getID(int id) {
-        return cards.get(id).getCard();
+    public BingoCard getCard(int id) {
+        return cards.get(id);
     }
 
     public BingoCard[] getPrintCards() {

@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 import static java.awt.Desktop.getDesktop;
 
@@ -19,7 +18,7 @@ public class MenuPanel extends JPanel {
         setBackground(new Color(230, 69, 69));
         askPrompts();
 
-        cardPanel = new CardPanel(parentPanel);
+        cardPanel = new CardPanel(parentPanel, bingoParent);
     }
 
     private void askPrompts() {
@@ -96,8 +95,8 @@ public class MenuPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     getDesktop().open(new File(filePath));
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Directory cannot be found.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -105,7 +104,7 @@ public class MenuPanel extends JPanel {
         viewCard.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String input = JOptionPane.showInputDialog(null, "Enter card ID number: ", "View Card", JOptionPane.PLAIN_MESSAGE);
+                String input = JOptionPane.showInputDialog(null, "Enter card ID number (max ID of " + bingoParent.getMaxBingoCards() + "): ", "View Card", JOptionPane.PLAIN_MESSAGE);
 
                 try {
                     int id = Integer.parseInt(input);

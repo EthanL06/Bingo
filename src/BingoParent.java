@@ -97,7 +97,7 @@ public class BingoParent {
         return maxBingoCards;
     }
 
-    public int[][] getCard(int id) {
-        return simulation.getID(id);
+    public BingoCard getCard(int id) {
+        return simulation.getCard(id);
     }
 }
