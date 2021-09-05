@@ -38,7 +38,7 @@ public class BingoParent {
             dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
             dialog.setModal(false);
             dialog.setAlwaysOnTop(true);
-            
+
             stopBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
