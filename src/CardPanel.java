@@ -1,25 +1,246 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class CardPanel extends JPanel {
 
     private final ParentPanel parentPanel;
+    private final BingoParent bingoParent;
     private BufferedImage cardImage;
-    private int[][] card;
+    private BingoCard bingoCard;
 
-    public CardPanel(ParentPanel parentPanel) {
+    public CardPanel(ParentPanel parentPanel, BingoParent bingoParent) {
         this.parentPanel = parentPanel;
-        card = null;
+        this.bingoParent = bingoParent;
+
+        bingoCard = null;
+
         try {
             cardImage = ImageIO.read(CardPanel.class.getResource("/images/card.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        setLayout(new BorderLayout());
+
+        setMenuBar();
+        setPopupMenu();
+
         parentPanel.add(this, "card");
+    }
+
+    private void setMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu cardMenu = new JMenu("Card");
+        JMenu helpMenu = new JMenu("Help");
+
+        cardMenu.setMnemonic(KeyEvent.VK_C);
+        helpMenu.setMnemonic(KeyEvent.VK_H);
+
+        JMenuItem openItem = new JMenuItem("Open");
+        JMenuItem infoItem = new JMenuItem("Info");
+        JMenuItem viewAnotherCardItem = new JMenuItem("View another card");
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        openItem.setMnemonic(KeyEvent.VK_O);
+        infoItem.setMnemonic(KeyEvent.VK_I);
+        viewAnotherCardItem.setMnemonic(KeyEvent.VK_V);
+        exitItem.setMnemonic(KeyEvent.VK_E);
+
+        ImageIcon openIcon;
+        ImageIcon infoIcon;
+        ImageIcon viewIcon;
+        ImageIcon exitIcon;
+
+        try {
+
+            int width = 12;
+            int height = 12;
+
+            openIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/folder.png")));
+            Image openImage = openIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            openIcon = new ImageIcon(openImage);
+
+            infoIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/info.png")));
+            Image infoImage = infoIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            infoIcon = new ImageIcon(infoImage);
+
+            viewIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/view.png")));
+            Image viewImage = viewIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            viewIcon = new ImageIcon(viewImage);
+
+            exitIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/exit.png")));
+            Image exitImage = exitIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            exitIcon = new ImageIcon(exitImage);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
+
+        openItem.setIcon(openIcon);
+        infoItem.setIcon(infoIcon);
+        viewAnotherCardItem.setIcon(viewIcon);
+        exitItem.setIcon(exitIcon);
+
+        openItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //                    getDesktop().open(new File(bingoCard.getFilePath()));
+                try {
+                    Runtime.getRuntime().exec("explorer.exe /select," + bingoCard.getFilePath());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
+
+        infoItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Clicked info item");
+            }
+        });
+
+        viewAnotherCardItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String input = JOptionPane.showInputDialog(null, "Enter card ID number (max ID of " + bingoParent.getMaxBingoCards() + "): ", "View Card", JOptionPane.PLAIN_MESSAGE);
+
+                try {
+                    int id = Integer.parseInt(input);
+
+                    if (!checkInput(id, bingoParent.getMaxBingoCards(), "card")) {
+                        return;
+                    }
+
+                    changeCard(bingoParent.getCard(id));
+                    repaint();
+                    parentPanel.changePanel("card");
+
+                } catch (NumberFormatException ex) {
+                    String msg;
+
+                    if (input == null) {
+                        msg = "Input not found.";
+                    } else if (input.matches("[0-9]+")) {
+                        msg = "Input exceeded integer limit.";
+                    } else {
+                        msg = "Input must only include numbers.";
+                    }
+
+                    System.out.println("Exception error: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, msg, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    parentPanel.changePanel("card");
+                }
+            }
+        });
+
+        exitItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentPanel.changePanel("menu");
+            }
+        });
+
+        cardMenu.add(openItem);
+        cardMenu.add(infoItem);
+        cardMenu.add(viewAnotherCardItem);
+        cardMenu.addSeparator();
+
+        cardMenu.add(exitItem);
+
+        menuBar.add(cardMenu);
+        menuBar.add(helpMenu);
+
+        add(menuBar, BorderLayout.NORTH);
+    }
+
+    private void setPopupMenu() {
+        JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem openItem = new JMenuItem("Open");
+        JMenuItem infoItem = new JMenuItem("Info");
+
+        openItem.setMnemonic(KeyEvent.VK_O);
+        infoItem.setMnemonic(KeyEvent.VK_I);
+
+        ImageIcon openIcon;
+        ImageIcon infoIcon;
+
+        try {
+            int width = 12;
+            int height = 12;
+
+            openIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/folder.png")));
+            Image openImage = openIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            openIcon = new ImageIcon(openImage);
+
+            infoIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/info.png")));
+            Image infoImage = infoIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            infoIcon = new ImageIcon(infoImage);
+        } catch (Exception e) {
+            System.out.println(e);
+            return;
+        }
+
+        openItem.setIcon(openIcon);
+        infoItem.setIcon(infoIcon);
+
+        openItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Runtime.getRuntime().exec("explorer.exe /select," + bingoCard.getFilePath());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
+
+        infoItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Clicked info item");
+            }
+        });
+
+
+        popupMenu.add(openItem);
+        popupMenu.add(infoItem);
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int x = e.getX();
+                    int y = e.getY();
+
+                    popupMenu.show(CardPanel.this, x, y);
+                }
+            }
+        });
+    }
+
+    public void changeCard(BingoCard card) {
+        this.bingoCard = card;
+    }
+
+    private boolean checkInput(int input, int max, String changePanel) {
+        if (input <= 0 || input > max) {
+            JOptionPane.showMessageDialog(null, "Invalid Input.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            parentPanel.changePanel(changePanel);
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -27,14 +248,23 @@ public class CardPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(cardImage, 0, 0, 1000, 1000, null);
 
-        if (card != null) {
+        if (bingoCard != null) {
             fillCard(g);
+            drawID(g, bingoCard.getID());
         }
     }
 
-    public void changeCard(int[][] card) {
-        this.card = card;
+    private void drawID(Graphics g, int id) {
+        g.setFont(new Font("TimesRoman", Font.BOLD, 25));
+        String formattedID = "#" + String.format("%06d", id);
+
+        final int x = 60;
+        final int y = 47;
+
+        g.drawString(formattedID, x, y);
     }
+
+
 
     private void fillCard(Graphics g) {
 
@@ -50,6 +280,8 @@ public class CardPanel extends JPanel {
         g.setColor(Color.BLACK);
 
         Font font = g.getFont().deriveFont(Font.BOLD, 150);
+
+        int[][] card = bingoCard.getCard();
 
         for (int col = 0; col < card[0].length; col++) {
             for (int[] row : card) {
