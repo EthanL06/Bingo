@@ -9,12 +9,18 @@ public class BingoCard {
     private final int[][] card;
     private int[][] displayCard;
     private final HashMap<Integer, Coordinate> squares;
+    private boolean isWinner;
+    private int amountToWin; // the number of bingo balls called before card wins
+    private String winDay;
 
     public BingoCard(int id) {
         this.id = id;
         this.filePath = null;
         card = new int[5][5];
         squares = new HashMap<>();
+        isWinner = false;
+        amountToWin = -1;
+        winDay = null;
 
         fillCard();
     }
@@ -47,13 +53,16 @@ public class BingoCard {
         displayCard = Arrays.stream(card).map(int[]::clone).toArray(int[][]::new);  // clones card array to displayCard
     }
 
-    public void chooseNumber(int number) {
+    public boolean chooseNumber(int number) {
         if (squares.containsKey(number)) {
             Coordinate coordinate = squares.get(number);
             card[coordinate.getRow()][coordinate.getColumn()] = 0;
+            System.out.println("\nNUMBER: " + number + toString());
+            return true;
         }
 
         System.out.println("\nNUMBER: " + number + toString());
+        return false;
     }
 
     public boolean checkWin() {
@@ -71,6 +80,7 @@ public class BingoCard {
             }
 
             if (win) {
+                isWinner = true;
                 return true;
             }
         }
@@ -88,6 +98,7 @@ public class BingoCard {
             }
 
             if (win) {
+                isWinner = true;
                 return true;
             }
         }
@@ -103,6 +114,7 @@ public class BingoCard {
         }
 
         if (win) {
+            isWinner = true;
             return true;
         }
 
@@ -117,11 +129,23 @@ public class BingoCard {
             y--;
         }
 
+        if (win) {
+            isWinner = true;
+        }
+
         return win;
     }
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public void setAmountToWin(int amount) {
+        amountToWin = amount;
+    }
+
+    public void setWinDay(String winDay) {
+        this.winDay = winDay;
     }
 
     public String getFilePath() {
@@ -134,6 +158,14 @@ public class BingoCard {
 
     public int[][] getCard() {
         return displayCard;
+    }
+
+    public int getAmountToWin() {
+        return amountToWin;
+    }
+
+    public String getWinDay() {
+        return winDay;
     }
 
     public String toString() {

@@ -53,7 +53,11 @@ public class MenuPanel extends JPanel {
                 return;
             }
 
-            JOptionPane.showMessageDialog(null, "Create and select folder where generated files will be stored.", "Folder Selection", JOptionPane.PLAIN_MESSAGE);
+            JLabel label = new JLabel("<html><center>Create and select folder where generated files will be stored.<br/>To create a new folder, right click in the folder selector and select \"New Folder.\"</html>");
+            label.setHorizontalTextPosition(SwingConstants.CENTER);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+
+            JOptionPane.showMessageDialog(null, label, "Folder Selection", JOptionPane.PLAIN_MESSAGE);
 
             String filePath = getFileInput();
 

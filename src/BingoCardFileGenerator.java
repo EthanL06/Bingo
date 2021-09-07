@@ -239,7 +239,7 @@ public class BingoCardFileGenerator implements Runnable {
     private void setCardsFilePath(int start, int end, String fileName) {
         for (int i = start-1; i <= end-1; i++) {
             cards[i].setFilePath(filePath + "\\" + fileName + ".png");
-            System.out.println("Card " + (i+1) + ": " + cards[i].getFilePath());
+//            System.out.println("Card " + (i+1) + ": " + cards[i].getFilePath());
         }
     }
 

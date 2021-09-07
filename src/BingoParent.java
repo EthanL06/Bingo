@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class BingoParent {
 
-    private BingoSimulation simulation;
+    private final BingoSimulation simulation;
     private final ParentPanel parentPanel;
     private final int maxBingoCards;
 
@@ -13,14 +13,17 @@ public class BingoParent {
         maxBingoCards = numOfBingoCards;
         this.parentPanel = parentPanel;
 
-        startBingoCardThreads(filePath);
+        startThreads(filePath);
     }
 
-    private void startBingoCardThreads(String filePath) {
+    private void startThreads(String filePath) {
+
+        System.out.println("Reached start threads");
 
         Thread bingoCardGenerator = new Thread(new BingoCardFileGenerator(filePath, simulation.getPrintCards()), "Card Generator");
+        Thread textFileGenerator = new Thread(new TextFileGenerator(filePath, simulation.getScheduleString(), simulation.getWinnerSchedule()));
 
-        Runnable runnable = () -> {
+        Runnable loadingRunnable = () -> {
 
             final boolean[] forceStop = {false};
 
@@ -87,10 +90,11 @@ public class BingoParent {
 
         };
 
-        bingoCardGenerator.start();
+        Thread loading = new Thread(loadingRunnable);
 
-        Thread loading = new Thread(runnable);
         loading.start();
+        bingoCardGenerator.start();
+        textFileGenerator.start();
     }
 
     public int getMaxBingoCards() {
