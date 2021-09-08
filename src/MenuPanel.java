@@ -66,6 +66,8 @@ public class MenuPanel extends JPanel {
                 parentPanel.changePanel("title");
             }  else {
 
+                JOptionPane.showMessageDialog(null, "The application will generate a bingo simulation. This could take a while. Press OK to continue.", "Press OK to continue", JOptionPane.PLAIN_MESSAGE);
+
                 bingoParent = new BingoParent(gameNumber, numOfBingoCards, numOfDays, numOfWinners, filePath, parentPanel);
                 setButtons(filePath);
 

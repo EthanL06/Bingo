@@ -31,19 +31,21 @@ public class BingoSimulation {
 
         RandomNumber.setSeed(seed);
 
+        System.out.println("Generating card objects...");
         for (int i = 1; i <= numOfCards; i++) {
             BingoCard card = new BingoCard(i);
 
             cards.put(i, card);
             printCards[i-1] = card;
 
-            System.out.println(card);
+//            System.out.println(card);
         }
 
         simulate();
     }
 
     private void simulate() {
+        System.out.println("Simulating...");
         int numOfWinners = 0;
         HashSet<Integer> winnerIDs = new HashSet<>();
 
@@ -213,10 +215,12 @@ public class BingoSimulation {
                 if (sumAmount >= amountToWin) {
                     if (row == 0) {     // if the win happens in AM
                         winnersAM.get(day).add(card.getID());
-                        card.setWinDay("Day " + day + " (A.M)");
+                        card.setWinDay("Day " + (day+1) + " (A.M)");
+                        card.setRoundWin(round+1);
                     } else {
                         winnersPM.get(day).add(card.getID());
-                        card.setWinDay("Day " + day + " (P.M.)");
+                        card.setWinDay("Day " + (day+1) + " (P.M.)");
+                        card.setRoundWin(round+1);
                     }
 
                     break;

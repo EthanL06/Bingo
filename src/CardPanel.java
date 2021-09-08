@@ -103,7 +103,7 @@ public class CardPanel extends JPanel {
         infoItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Clicked info item");
+                cardInfoDialog();
             }
         });
 
@@ -207,7 +207,7 @@ public class CardPanel extends JPanel {
         infoItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Clicked info item");
+                cardInfoDialog();
             }
         });
 
@@ -227,6 +227,25 @@ public class CardPanel extends JPanel {
                 }
             }
         });
+    }
+
+    private void cardInfoDialog() {
+        String cardID = String.format("%06d", bingoCard.getID());
+        String isWinner = bingoCard.isWinner() ? "Yes" : "No";
+
+        String msg =    "Card ID:\n#" + cardID + "\n\n" +
+                        "Card Win:\n" + isWinner;
+
+        if (isWinner.equals("Yes")) {
+            String winDay = bingoCard.getWinDay();
+            String roundWin = Integer.toString(bingoCard.getRoundWin());
+
+            msg +=  "\n\n" +
+                    "Day Win:\n" + winDay + "\n\n" +
+                    "Round Win:\nRound " + roundWin;
+        }
+
+        JOptionPane.showMessageDialog(null, msg, "Card Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void changeCard(BingoCard card) {

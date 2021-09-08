@@ -10,6 +10,7 @@ public class BingoCard {
     private int[][] displayCard;
     private final HashMap<Integer, Coordinate> squares;
     private boolean isWinner;
+    private int roundWin;
     private int amountToWin; // the number of bingo balls called before card wins
     private String winDay;
 
@@ -19,6 +20,7 @@ public class BingoCard {
         card = new int[5][5];
         squares = new HashMap<>();
         isWinner = false;
+        roundWin = -1;
         amountToWin = -1;
         winDay = null;
 
@@ -57,11 +59,11 @@ public class BingoCard {
         if (squares.containsKey(number)) {
             Coordinate coordinate = squares.get(number);
             card[coordinate.getRow()][coordinate.getColumn()] = 0;
-            System.out.println("\nNUMBER: " + number + toString());
+//            System.out.println("\nNUMBER: " + number + toString());
             return true;
         }
 
-        System.out.println("\nNUMBER: " + number + toString());
+//        System.out.println("\nNUMBER: " + number + toString());
         return false;
     }
 
@@ -148,6 +150,14 @@ public class BingoCard {
         this.winDay = winDay;
     }
 
+    public void setRoundWin(int round) {
+        roundWin = round;
+    }
+
+    public int getRoundWin() {
+        return roundWin;
+    }
+
     public String getFilePath() {
         return this.filePath;
     }
@@ -166,6 +176,10 @@ public class BingoCard {
 
     public String getWinDay() {
         return winDay;
+    }
+
+    public boolean isWinner() {
+        return isWinner;
     }
 
     public String toString() {
