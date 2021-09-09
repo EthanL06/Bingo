@@ -70,7 +70,7 @@ public class TitlePanel extends JPanel {
         b.setAlignmentY(JButton.CENTER_ALIGNMENT);
         b.setFont(new Font("Gill Sans MT", Font.BOLD, 38));
 
-        if (text.toLowerCase().equals("start")) {
+        if (text.equalsIgnoreCase("start")) {
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

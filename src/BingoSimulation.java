@@ -76,7 +76,7 @@ public class BingoSimulation {
         setSchedule();
         setWinnerSchedule();
 
-        System.out.println("BALLS: (" + balls.size() + "): " + balls.toString());
+        System.out.println("BALLS: (" + balls.size() + "): " + balls);
 
         System.out.println("SIMULATION COMPLETE");
         isSimComplete = true;

@@ -35,7 +35,7 @@ public class ParentPanel extends JPanel {
 
     /*
         PANEL NAMES:
-        title, help, menu, card
+        title, help, menu, card, game info
      */
 
     public void changePanel(String panelName) {

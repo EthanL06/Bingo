@@ -1,4 +1,6 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +13,8 @@ public class MenuPanel extends JPanel {
     private final ParentPanel parentPanel;
     private BingoParent bingoParent;
     private final CardPanel cardPanel;
+    private final GameInfoPanel gameInfoPanel;
+    private Color color;
 
     public MenuPanel(ParentPanel parentPanel) {
         this.parentPanel = parentPanel;
@@ -19,6 +23,7 @@ public class MenuPanel extends JPanel {
         askPrompts();
 
         cardPanel = new CardPanel(parentPanel, bingoParent);
+        gameInfoPanel = new GameInfoPanel(parentPanel, bingoParent);
     }
 
     private void askPrompts() {
@@ -69,7 +74,7 @@ public class MenuPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "The application will generate a bingo simulation. This could take a while. Press OK to continue.", "Press OK to continue", JOptionPane.PLAIN_MESSAGE);
 
                 bingoParent = new BingoParent(gameNumber, numOfBingoCards, numOfDays, numOfWinners, filePath, parentPanel);
-                setButtons(filePath);
+                setGraphics(filePath);
 
                 parentPanel.add(this, "menu");
             }
@@ -91,10 +96,61 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    private void setButtons(String filePath) {
-        JButton openDirectory = new JButton("OPEN DIRECTORY");
-        JButton viewCard = new JButton("VIEW CARD");
-        JButton gameInfo = new JButton("GAME INFO");
+    private void setGraphics(String filePath) {
+        setLayout(new BorderLayout());
+        color = new Color(230, 69, 69);
+        setBackground(color);
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        JPanel imagePanel = new JPanel(new GridBagLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 0, 50));
+
+        Border centerBorder = BorderFactory.createEmptyBorder(0, 0, 300, 0);
+
+        setImage(imagePanel);
+        setButtons(filePath, buttonPanel);
+
+        centerPanel.setBorder(centerBorder);
+        centerPanel.setPreferredSize(new Dimension(150, 150));
+        centerPanel.setBackground(color);
+        centerPanel.add(buttonPanel);
+
+        add(centerPanel, BorderLayout.CENTER);
+        add(imagePanel, BorderLayout.NORTH);
+    }
+
+    private void setImage(JPanel imagePanel) {
+
+        ImageIcon menuImageIcon = null;
+        Border border = BorderFactory.createEmptyBorder(200, 0, 100, 0);
+
+        try {
+            menuImageIcon = new ImageIcon(ImageIO.read(MenuPanel.class.getResource("/images/menu.png")));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        JLabel imageLabel = new JLabel();
+        imageLabel.setIcon(menuImageIcon);
+
+        imagePanel.add(imageLabel);
+        imagePanel.setBorder(border);
+        imagePanel.setSize(new Dimension(menuImageIcon.getIconWidth(), menuImageIcon.getIconWidth()));
+        imagePanel.setBackground(color);
+    }
+
+    private void setButtons(String filePath, JPanel buttonPanel) {
+
+        JButton openDirectory = createButton("OPEN DIRECTORY");
+        JButton viewCard = createButton("VIEW CARD");
+        JButton gameInfo = createButton("GAME INFO");
+
+        buttonPanel.setPreferredSize(new Dimension(200, 300));
+        buttonPanel.setBackground(color);
+
+        buttonPanel.add(openDirectory);
+        buttonPanel.add(viewCard);
+        buttonPanel.add(gameInfo);
 
         openDirectory.addActionListener(new ActionListener() {
             @Override
@@ -140,9 +196,26 @@ public class MenuPanel extends JPanel {
             }
         });
 
-        add(openDirectory);
-        add(viewCard);
-        add(gameInfo);
+        gameInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentPanel.changePanel("game info");
+            }
+        });
+    }
+
+    private JButton createButton(String text) {
+        JButton b = new JButton(text);
+        Border border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2), BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        b.setBackground(new Color(214, 40, 40));
+        b.setForeground(Color.WHITE);
+        b.setFocusPainted(false);
+        b.setBorder(border);
+        b.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        b.setAlignmentY(JButton.CENTER_ALIGNMENT);
+        b.setFont(new Font("Gill Sans MT", Font.BOLD, 30));
+
+        return b;
     }
 
     private String getInput(String message) {

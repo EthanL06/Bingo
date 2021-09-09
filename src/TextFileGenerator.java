@@ -31,10 +31,6 @@ public class TextFileGenerator implements Runnable{
             pw.println(schedule);
             pw.close();
 
-            if (!scheduleFile.createNewFile()) {
-                System.out.println("schedule.txt already exists.");
-            }
-
             System.out.println("schedule.txt successfully created.");
 
         } catch (IOException e) {
@@ -51,10 +47,6 @@ public class TextFileGenerator implements Runnable{
             pw.println("WINNERS:\n");
             pw.println(winnerSchedule);
             pw.close();
-
-            if (!scheduleFile.createNewFile()) {
-                System.out.println("winners.txt already exists.");
-            }
 
             System.out.println("winners.txt successfully created.");
 
