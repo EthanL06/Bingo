@@ -33,7 +33,7 @@ public class ParentPanel extends JPanel {
         cl.show(this, "title");
     }
 
-    /*
+     /*
         PANEL NAMES:
         title, help, menu, card, game info
      */
