@@ -11,12 +11,16 @@ public class CardPanel extends JPanel {
     private final BingoParent bingoParent;
     private BufferedImage cardImage;
     private BingoCard bingoCard;
+    private BingoMarkers bingoMarkers;
+    private JMenuItem[] markerItems;
+    private boolean toggleMarkers;
 
     public CardPanel(ParentPanel parentPanel, BingoParent bingoParent) {
         this.parentPanel = parentPanel;
         this.bingoParent = bingoParent;
-
         bingoCard = null;
+        markerItems = new JMenuItem[2];
+        toggleMarkers = false;
 
         try {
             cardImage = ImageIO.read(CardPanel.class.getResource("/images/card.png"));
@@ -43,16 +47,20 @@ public class CardPanel extends JPanel {
 
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem infoItem = new JMenuItem("Info");
+        JMenuItem toggleMarkersItem = new JMenuItem("Toggle markers");
         JMenuItem viewAnotherCardItem = new JMenuItem("View another card");
         JMenuItem exitItem = new JMenuItem("Exit");
 
         openItem.setMnemonic(KeyEvent.VK_O);
         infoItem.setMnemonic(KeyEvent.VK_I);
+        toggleMarkersItem.setMnemonic(KeyEvent.VK_T);
         viewAnotherCardItem.setMnemonic(KeyEvent.VK_V);
         exitItem.setMnemonic(KeyEvent.VK_E);
 
         ImageIcon openIcon;
         ImageIcon infoIcon;
+        ImageIcon checkTempIcon;
+        final ImageIcon checkIcon;
         ImageIcon viewIcon;
         ImageIcon exitIcon;
 
@@ -69,6 +77,10 @@ public class CardPanel extends JPanel {
             Image infoImage = infoIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             infoIcon = new ImageIcon(infoImage);
 
+            checkTempIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/checkmark.png")));
+            Image checkImage = checkTempIcon.getImage().getScaledInstance(width, height+6, Image.SCALE_SMOOTH);
+            checkIcon = new ImageIcon(checkImage);
+
             viewIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/view.png")));
             Image viewImage = viewIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             viewIcon = new ImageIcon(viewImage);
@@ -84,6 +96,7 @@ public class CardPanel extends JPanel {
 
         openItem.setIcon(openIcon);
         infoItem.setIcon(infoIcon);
+        toggleMarkersItem.setIcon(toggleMarkers ? checkIcon : null);
         viewAnotherCardItem.setIcon(viewIcon);
         exitItem.setIcon(exitIcon);
 
@@ -104,6 +117,17 @@ public class CardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardInfoDialog();
+            }
+        });
+
+        toggleMarkersItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleMarkers(checkIcon);
+//
+//                toggleMarkers = !toggleMarkers;
+//
+//                setToggleIcon(checkIcon);
             }
         });
 
@@ -150,9 +174,12 @@ public class CardPanel extends JPanel {
 
         cardMenu.add(openItem);
         cardMenu.add(infoItem);
-        cardMenu.add(viewAnotherCardItem);
+        markerItems[0] = toggleMarkersItem;
+        cardMenu.add(toggleMarkersItem);
+
         cardMenu.addSeparator();
 
+        cardMenu.add(viewAnotherCardItem);
         cardMenu.add(exitItem);
 
         menuBar.add(cardMenu);
@@ -166,12 +193,16 @@ public class CardPanel extends JPanel {
 
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem infoItem = new JMenuItem("Info");
+        JMenuItem toggleMarkersItem = new JMenuItem("Toggle markers");
 
         openItem.setMnemonic(KeyEvent.VK_O);
         infoItem.setMnemonic(KeyEvent.VK_I);
+        toggleMarkersItem.setMnemonic(KeyEvent.VK_T);
 
         ImageIcon openIcon;
         ImageIcon infoIcon;
+        ImageIcon checkTempIcon;
+        final ImageIcon checkIcon;
 
         try {
             int width = 12;
@@ -184,6 +215,10 @@ public class CardPanel extends JPanel {
             infoIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/info.png")));
             Image infoImage = infoIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             infoIcon = new ImageIcon(infoImage);
+
+            checkTempIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/checkmark.png")));
+            Image checkImage = checkTempIcon.getImage().getScaledInstance(width, height+6, Image.SCALE_SMOOTH);
+            checkIcon = new ImageIcon(checkImage);
         } catch (Exception e) {
             System.out.println(e);
             return;
@@ -191,6 +226,7 @@ public class CardPanel extends JPanel {
 
         openItem.setIcon(openIcon);
         infoItem.setIcon(infoIcon);
+        toggleMarkersItem.setIcon(toggleMarkers ? checkIcon : null);
 
         openItem.addActionListener(new ActionListener() {
             @Override
@@ -211,9 +247,20 @@ public class CardPanel extends JPanel {
             }
         });
 
+        toggleMarkersItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleMarkers(checkIcon);
+//                toggleMarkers = !toggleMarkers;
+//
+//                setToggleIcon(checkIcon);
+            }
+        });
 
         popupMenu.add(openItem);
         popupMenu.add(infoItem);
+        markerItems[1] = toggleMarkersItem;
+        popupMenu.add(toggleMarkersItem);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -262,6 +309,14 @@ public class CardPanel extends JPanel {
         return true;
     }
 
+    private void toggleMarkers(ImageIcon icon) {
+        toggleMarkers = !toggleMarkers;
+
+        markerItems[0].setIcon(toggleMarkers ? icon : null);
+        markerItems[1].setIcon(toggleMarkers ? icon : null);
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -270,6 +325,11 @@ public class CardPanel extends JPanel {
         if (bingoCard != null) {
             fillCard(g);
             drawID(g, bingoCard.getID());
+
+            if (toggleMarkers) {
+                bingoMarkers = new BingoMarkers(bingoCard.getChosenSquares());
+                bingoMarkers.drawMarkers(g);
+            }
         }
     }
 

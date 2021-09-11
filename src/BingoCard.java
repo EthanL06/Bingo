@@ -9,6 +9,7 @@ public class BingoCard {
     private final int[][] card;
     private int[][] displayCard;
     private final HashMap<Integer, Coordinate> squares;
+    private final HashSet<Coordinate> chosenSquares;
     private boolean isWinner;
     private int roundWin;
     private int amountToWin; // the number of bingo balls called before card wins
@@ -19,6 +20,7 @@ public class BingoCard {
         this.filePath = null;
         card = new int[5][5];
         squares = new HashMap<>();
+        chosenSquares = new HashSet<>();
         isWinner = false;
         roundWin = -1;
         amountToWin = -1;
@@ -41,6 +43,10 @@ public class BingoCard {
                     num = RandomNumber.nextNumber(max - min) + min;
                 }
 
+                if (row == 2 && col == 2) {
+                    num = 0;
+                }
+
                 card[row][col] = num;
                 squares.put(num, new Coordinate(row, col));
                 selectedNums.add(num);
@@ -51,7 +57,9 @@ public class BingoCard {
         }
 
         // 0 = Free space
-        card[2][2] = 0;
+//        card[2][2] = 0;
+        Coordinate freeSpace = new Coordinate(2, 2);
+        chosenSquares.add(freeSpace);
         displayCard = Arrays.stream(card).map(int[]::clone).toArray(int[][]::new);  // clones card array to displayCard
     }
 
@@ -59,11 +67,10 @@ public class BingoCard {
         if (squares.containsKey(number)) {
             Coordinate coordinate = squares.get(number);
             card[coordinate.getRow()][coordinate.getColumn()] = 0;
-//            System.out.println("\nNUMBER: " + number + toString());
+            chosenSquares.add(coordinate);
             return true;
         }
 
-//        System.out.println("\nNUMBER: " + number + toString());
         return false;
     }
 
@@ -176,6 +183,10 @@ public class BingoCard {
 
     public String getWinDay() {
         return winDay;
+    }
+
+    public HashSet<Coordinate> getChosenSquares() {
+        return chosenSquares;
     }
 
     public boolean isWinner() {
