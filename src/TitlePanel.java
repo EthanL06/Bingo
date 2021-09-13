@@ -13,12 +13,9 @@ public class TitlePanel extends JPanel {
      */
 
     private final ParentPanel parentPanel;
-    private boolean userNeedHelp;
-
 
     public TitlePanel(ParentPanel parentPanel) {
         this.parentPanel = parentPanel;
-        userNeedHelp = true;
 
         setPreferredSize(new Dimension(1000, 1000));
         setLayout(new BorderLayout());
@@ -74,27 +71,13 @@ public class TitlePanel extends JPanel {
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (userNeedHelp) {
-                        userNeedHelp = false;
-
-                        int input = JOptionPane.showConfirmDialog(null, "This is your first time. Do you need help?", "Need help?", JOptionPane.YES_NO_OPTION);
-
-                        if (input == JOptionPane.NO_OPTION) {
-                            parentPanel.initializeMenuPanel();
-                        } else {
-                            parentPanel.changePanel("help");
-                        }
-
-                    } else {
-                        parentPanel.initializeMenuPanel();
-                    }
+                    parentPanel.initializeMenuPanel();
                 }
             });
         } else {
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    userNeedHelp = false;
                     parentPanel.changePanel(text.toLowerCase());
                 }
             });
