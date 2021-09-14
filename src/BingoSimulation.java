@@ -37,8 +37,6 @@ public class BingoSimulation {
 
             cards.put(i, card);
             printCards[i-1] = card;
-
-//            System.out.println(card);
         }
 
         simulate();
@@ -170,8 +168,10 @@ public class BingoSimulation {
         scheduleString += "\n\n\n";
 
         int index = 0;
+        int round = 1;
         for (int day = 1; day <= days; day++) {
-            scheduleString += "﹍﹍﹍\nDAY " + day + "\n\n  AM:";
+            scheduleString += "﹍﹍﹍\nDAY " + day + "\n\n  AM (ROUND " + round + "):";
+            round++;
 
             // A.M.
             for (int count = 0; count < schedule[0][day-1]; count++) {
@@ -179,7 +179,8 @@ public class BingoSimulation {
                 index++;
             }
 
-            scheduleString += "\n  PM:";
+            scheduleString += "\n  PM (ROUND " + round + "):";
+            round++;
 
             // P.M.
             for (int count = 0; count < schedule[1][day-1]; count++) {
@@ -216,12 +217,11 @@ public class BingoSimulation {
                     if (row == 0) {     // if the win happens in AM
                         winnersAM.get(day).add(card.getID());
                         card.setWinDay("Day " + (day+1) + " (A.M)");
-                        card.setRoundWin(round+1);
                     } else {
                         winnersPM.get(day).add(card.getID());
                         card.setWinDay("Day " + (day+1) + " (P.M.)");
-                        card.setRoundWin(round+1);
                     }
+                    card.setRoundWin(round+1);
 
                     break;
                 }
@@ -232,9 +232,11 @@ public class BingoSimulation {
         }
 
         winnerSchedule = "";
+        int round = 1;
 
         for (int day = 1; day <= days; day++) {
-            winnerSchedule += "﹍﹍﹍\nDAY " + day + "\n\n  AM:";
+            winnerSchedule += "﹍﹍﹍\nDAY " + day + "\n\n  AM (ROUND " + round + "):";
+            round++;
 
             if (!winnersAM.get(day-1).isEmpty()) {
                 for (Integer id: winnersAM.get(day-1)) {
@@ -244,7 +246,8 @@ public class BingoSimulation {
                 winnerSchedule += " N/A";
             }
 
-            winnerSchedule += "\n  PM:";
+            winnerSchedule += "\n  PM (ROUND " + round + "):";
+            round++;
 
             if (!winnersPM.get(day-1).isEmpty()) {
                 for (Integer id: winnersPM.get(day-1)) {
