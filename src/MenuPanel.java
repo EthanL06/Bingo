@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import static java.awt.Desktop.getDesktop;
 
 public class MenuPanel extends JPanel {
