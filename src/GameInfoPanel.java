@@ -1,81 +1,144 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GameInfoPanel extends JPanel {
 
-    private final ParentPanel parentPanel;
-    private final BingoParent bingoParent;
-    private Color color;
+    private final BingoSimulation simulation;
+    private final int gameNumber;
+    private final int numOfCards;
+    private final int numOfWinners;
+    private final int days;
+    private final String schedule;
+    private final String winners;
+    private int page;
+    private JButton backButton;
+    private JButton exitButton;
+    private JButton nextButton;
+    private JDialog dialog;
+    private boolean exit;
 
-    public GameInfoPanel(ParentPanel parentPanel, BingoParent bingoParent) {
-        this.parentPanel = parentPanel;
-        this.bingoParent = bingoParent;
-        color = new Color(230, 69, 69);
 
-        setGraphics();
-        parentPanel.add(this, "game info");
+    public GameInfoPanel(BingoSimulation simulation) {
+        this.simulation = simulation;
+
+        gameNumber = simulation.getGameNumber();
+        numOfCards = simulation.getNumOfCards();
+        numOfWinners = simulation.getMaxWinners();
+        days = simulation.getDays();
+
+        String temp = simulation.getScheduleString();
+        String winnerTemp = simulation.getWinnerSchedule();
+
+        temp = temp.substring(temp.indexOf("DAY 1", temp.indexOf("DAY 1") + 1));
+
+        temp = temp.replaceAll("﹉", "");
+        temp = temp.replaceAll("┊", "");
+        temp = temp.replaceAll("┅", "");
+        temp = temp.replaceAll("﹍", "");
+        temp = temp.replaceAll("\n\n\n\n", "\n");
+
+        winnerTemp = winnerTemp.replaceAll("﹍", "");
+        winnerTemp = winnerTemp.replaceAll("\n\n", "\n");
+        winners = winnerTemp.replaceFirst("\n", "");
+        schedule = temp;
+
+        exit = false;
+
+        backButton = new JButton("Back");
+        exitButton = new JButton("Exit");
+        nextButton = new JButton("Next");
+        dialog = null;
+
+        page = 1;
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void showDialog() {
+        page = 1;
+        exit = false;
+        setListeners();
+        changePage(page);
     }
-    
-    private void setGraphics() {
-    	setLayout(new BorderLayout());
-    	setBackground(color);
 
-    	JPanel imagePanel = new JPanel(new GridBagLayout());
-    	setImage(imagePanel);
-    	
-    	JPanel gameInfo = new JPanel(new GridBagLayout());
-        setGameInfoPanel(gameInfo);
+    private void changePage(int page) {
 
-    	add(imagePanel, BorderLayout.NORTH);
-    	add(gameInfo);
-    }
-    
-    private void setImage(JPanel imagePanel) {
-        ImageIcon gameInfoImage = null;
-        Border border = BorderFactory.createEmptyBorder(100, 0, 100, 0);
+        Object[] options = null;
+        String msg = "";
 
-        try {
-            gameInfoImage = new ImageIcon(ImageIO.read(MenuPanel.class.getResource("/images/game_info_2.png")));
-        } catch (Exception e) {
-            System.out.println(e);
+        switch (page) {
+            case 1:
+                options = new Object[]{exitButton, nextButton};
+                msg = "PARAMETERS:\n\nGame Number: " + gameNumber + "\n\n" +
+                        "Number of cards: " + numOfCards + "\n\n" +
+                        "Number of winners: " + numOfWinners + "\n\n" +
+                        "Number of days: " + days;
+                break;
+            case 2:
+                options = new Object[]{backButton, exitButton, nextButton};
+                msg = "BALL SEQUENCE:\n\n" + schedule;
+                break;
+            case 3:
+                options = new Object[]{backButton, exitButton};
+                msg = "WINNERS:\n\n" + winners;
+                break;
         }
 
-        JLabel imageLabel = new JLabel();
-        imageLabel.setIcon(gameInfoImage);
+        JTextArea textArea = new JTextArea(msg);
+        textArea.setEditable(false);
+        textArea.setFont(textArea.getFont().deriveFont(16f));
+        JScrollPane sp = new JScrollPane(textArea);
+        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        imagePanel.add(imageLabel);
-        imagePanel.setBorder(border);
-        imagePanel.setSize(new Dimension(gameInfoImage.getIconWidth(), gameInfoImage.getIconWidth()));
-        imagePanel.setBackground(color);
+        JOptionPane optionPane = new JOptionPane(sp);
+        optionPane.setMessageType(JOptionPane.PLAIN_MESSAGE);
+        optionPane.setPreferredSize(new Dimension(450, 250));
+        optionPane.setOptions(options);
+
+
+        dialog = optionPane.createDialog(null, "Game Info (" + page + "/3)");
+
+        if (!exit) {
+            dialog.setModal(true);
+            dialog.setVisible(true);
+        }
+
     }
 
-    private void setGameInfoPanel(JPanel gameInfo) {
-        Border border = BorderFactory.createEmptyBorder(-100, 0, 0, 0);
-        GridBagConstraints gc = new GridBagConstraints();
-        Font font = new Font("Arial Rounded MT", Font.BOLD, 50);
+    private void setListeners() {
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Back clicked");
+                dialog.dispose();
+                page--;
+                changePage(page);
+            }
+        });
 
-        gameInfo.setBorder(border);
-        gameInfo.setBackground(color);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Exit clicked");
+                dialog.dispose();
+                exit = true;
+            }
+        });
 
-        JLabel parameters = new JLabel("PARAMETERS");
-        parameters.setFont(font);
-        parameters.setForeground(Color.WHITE);
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-        gc.gridx = 0;
-        gc.gridy = 0;
-//        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gc.insets = new Insets(2, 0, 0, 2);
-//        gc.weightx = 1;
-        gc.weighty = 1;
+                if (!exit) {
+                    dialog.dispose();
+                    page++;
+                    changePage(page);
+                } else {
+                    dialog.dispose();
+                }
 
-        gameInfo.add(parameters, gc);
+            }
+        });
     }
+
 }

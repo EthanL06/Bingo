@@ -104,4 +104,8 @@ public class BingoParent {
     public BingoCard getCard(int id) {
         return simulation.getCard(id);
     }
+
+    public BingoSimulation getSimulation() {
+        return simulation;
+    }
 }

@@ -23,7 +23,7 @@ public class MenuPanel extends JPanel {
         askPrompts();
 
         cardPanel = new CardPanel(parentPanel, bingoParent);
-        gameInfoPanel = new GameInfoPanel(parentPanel, bingoParent);
+        gameInfoPanel = new GameInfoPanel(bingoParent.getSimulation());
     }
 
     private void askPrompts() {
@@ -199,7 +199,7 @@ public class MenuPanel extends JPanel {
         gameInfo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parentPanel.changePanel("game info");
+                gameInfoPanel.showDialog();
             }
         });
     }

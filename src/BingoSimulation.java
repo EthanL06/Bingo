@@ -7,6 +7,8 @@ public class BingoSimulation {
 
     private final int days;
     private final int maxWinners;
+    private final int seed;
+    private final int numOfCards;
     private final HashMap<Integer, BingoCard> cards;
     private final HashSet<Integer> chosenBalls;
     private final ArrayList<Integer> balls;
@@ -21,6 +23,8 @@ public class BingoSimulation {
 
         this.days = days;
         this.maxWinners = maxWinners;
+        this.seed = seed;
+        this.numOfCards = numOfCards;
         cards = new HashMap<>();
         chosenBalls = new HashSet<>();
         balls = new ArrayList<>();
@@ -135,6 +139,10 @@ public class BingoSimulation {
                 }
             }
         }
+    }
+
+    public int[][] getSchedule() {
+        return schedule;
     }
 
 
@@ -281,6 +289,22 @@ public class BingoSimulation {
 
     public boolean isSimulationComplete() {
         return isSimComplete;
+    }
+
+    public int getGameNumber() {
+        return seed;
+    }
+
+    public int getNumOfCards() {
+        return numOfCards;
+    }
+
+    public int getMaxWinners() {
+        return maxWinners;
+    }
+
+    public int getDays() {
+        return days;
     }
 
 
