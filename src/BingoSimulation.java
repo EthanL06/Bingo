@@ -13,6 +13,8 @@ public class BingoSimulation {
     private final HashSet<Integer> chosenBalls;
     private final ArrayList<Integer> balls;
     private final ArrayList<BingoCard> winners;
+    private ArrayList<ArrayList<Integer>> winnersAM;
+    private ArrayList<ArrayList<Integer>> winnersPM;
     private final BingoCard[] printCards; // array of BingoCards that will be used to generate bingo card files
     private int[][] schedule;
     private String winnerSchedule;
@@ -203,8 +205,8 @@ public class BingoSimulation {
     }
 
     private void setWinnerSchedule() {
-        ArrayList<ArrayList<Integer>> winnersAM = new ArrayList<>(days);
-        ArrayList<ArrayList<Integer>> winnersPM = new ArrayList<>(days);
+        winnersAM = new ArrayList<>(days);
+        winnersPM = new ArrayList<>(days);
 
         for (int i = 0; i < days; i++) {
             winnersAM.add(new ArrayList<>());
@@ -271,6 +273,14 @@ public class BingoSimulation {
 
     public String getWinnerSchedule() {
         return winnerSchedule;
+    }
+
+    public ArrayList<ArrayList<Integer>> getWinnersAM() {
+        return winnersAM;
+    }
+
+    public ArrayList<ArrayList<Integer>> getWinnersPM() {
+        return winnersPM;
     }
 
     private String generateBorder(String border) {
