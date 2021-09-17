@@ -43,24 +43,27 @@ public class CardPanel extends JPanel {
         JMenu helpMenu = new JMenu("Help");
 
         cardMenu.setMnemonic(KeyEvent.VK_C);
-        helpMenu.setMnemonic(KeyEvent.VK_H);
+//        helpMenu.setMnemonic(KeyEvent.VK_H);
 
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem infoItem = new JMenuItem("Info");
         JMenuItem toggleMarkersItem = new JMenuItem("Toggle markers");
         JMenuItem viewAnotherCardItem = new JMenuItem("View another card");
+        JMenuItem helpItem = new JMenuItem("Help");
         JMenuItem exitItem = new JMenuItem("Exit");
 
         openItem.setMnemonic(KeyEvent.VK_O);
         infoItem.setMnemonic(KeyEvent.VK_I);
         toggleMarkersItem.setMnemonic(KeyEvent.VK_T);
         viewAnotherCardItem.setMnemonic(KeyEvent.VK_V);
+        helpItem.setMnemonic(KeyEvent.VK_H);
         exitItem.setMnemonic(KeyEvent.VK_E);
 
         ImageIcon openIcon;
         ImageIcon infoIcon;
         ImageIcon checkTempIcon;
         final ImageIcon checkIcon;
+        ImageIcon helpIcon;
         ImageIcon viewIcon;
         ImageIcon exitIcon;
 
@@ -85,6 +88,10 @@ public class CardPanel extends JPanel {
             Image viewImage = viewIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             viewIcon = new ImageIcon(viewImage);
 
+            helpIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/help.png")));
+            Image helpImage = helpIcon.getImage().getScaledInstance(width, height+3, Image.SCALE_SMOOTH);
+            helpIcon = new ImageIcon(helpImage);
+
             exitIcon = new ImageIcon(ImageIO.read(CardPanel.class.getResource("/images/exit.png")));
             Image exitImage = exitIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             exitIcon = new ImageIcon(exitImage);
@@ -97,6 +104,7 @@ public class CardPanel extends JPanel {
         openItem.setIcon(openIcon);
         infoItem.setIcon(infoIcon);
         toggleMarkersItem.setIcon(toggleMarkers ? checkIcon : null);
+        helpItem.setIcon(helpIcon);
         viewAnotherCardItem.setIcon(viewIcon);
         exitItem.setIcon(exitIcon);
 
@@ -124,10 +132,6 @@ public class CardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 toggleMarkers(checkIcon);
-//
-//                toggleMarkers = !toggleMarkers;
-//
-//                setToggleIcon(checkIcon);
             }
         });
 
@@ -165,12 +169,37 @@ public class CardPanel extends JPanel {
             }
         });
 
+        helpItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                HelpPanel.showDialog(3);
+            }
+        });
+
+
         exitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parentPanel.changePanel("menu");
             }
         });
+
+//        helpMenu.addMenuListener(new MenuListener() {
+//            @Override
+//            public void menuSelected(MenuEvent e) {
+//                HelpPanel.showDialog(3);
+//            }
+//
+//            @Override
+//            public void menuDeselected(MenuEvent e) {
+//
+//            }
+//
+//            @Override
+//            public void menuCanceled(MenuEvent e) {
+//
+//            }
+//        });
 
         cardMenu.add(openItem);
         cardMenu.add(infoItem);
@@ -180,10 +209,14 @@ public class CardPanel extends JPanel {
         cardMenu.addSeparator();
 
         cardMenu.add(viewAnotherCardItem);
+        cardMenu.add(helpItem);
+
+        cardMenu.addSeparator();
+
         cardMenu.add(exitItem);
 
         menuBar.add(cardMenu);
-        menuBar.add(helpMenu);
+//        menuBar.add(helpMenu);
 
         add(menuBar, BorderLayout.NORTH);
     }

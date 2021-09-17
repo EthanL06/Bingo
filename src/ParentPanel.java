@@ -24,11 +24,10 @@ public class ParentPanel extends JPanel {
         defaults.put("Button.focus", new ColorUIResource((new Color(0, 0, 0, 0))));
 
         titlePanel = new TitlePanel(this);
-        helpPanel = new HelpPanel(this);
+        helpPanel = new HelpPanel();
         hasStarted = false;
 
         add(titlePanel, "title");
-        add(helpPanel, "help");
 
         cl.show(this, "title");
     }

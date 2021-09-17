@@ -78,7 +78,7 @@ public class TitlePanel extends JPanel {
             b.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    parentPanel.changePanel(text.toLowerCase());
+                    HelpPanel.showDialog();
                 }
             });
         }
