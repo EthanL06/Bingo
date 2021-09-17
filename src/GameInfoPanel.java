@@ -69,10 +69,13 @@ public class GameInfoPanel extends JPanel {
         switch (page) {
             case 1:
                 options = new Object[]{exitButton, nextButton};
-                msg = "PARAMETERS:\n\nGame Number: " + gameNumber + "\n\n" +
-                        "Number of cards: " + numOfCards + "\n\n" +
-                        "Number of winners: " + numOfWinners + "\n\n" +
-                        "Number of days: " + days;
+                msg = "<h1><span style=\"font-family: Verdana, Geneva, sans-serif; padding-top: 0;\">Parameters</span></h1>\r\n"
+                		+ "\r\n"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif; display: inline;\">Game Number:&nbsp;</h3>\r\n"
+                		+ "<p style=\"display:inline;\">test</p>"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif; display: inline-block\">Number of cards: <p>" + numOfCards + "</p></h3>\r\n"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of winners: <p>" + winners + "</p></h3>\r\n"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of days: <p>" + days + "</p></h3>";
                 break;
             case 2:
                 options = new Object[]{backButton, exitButton, nextButton};
@@ -84,9 +87,10 @@ public class GameInfoPanel extends JPanel {
                 break;
         }
 
-        JTextArea textArea = new JTextArea(msg);
+        JEditorPane textArea = new JEditorPane("text/html", msg);
         textArea.setEditable(false);
-        textArea.setFont(textArea.getFont().deriveFont(16f));
+//        textArea.setFont(textArea.getFont().deriveFont(16f));
+        textArea.setCaretPosition(0);
         JScrollPane sp = new JScrollPane(textArea);
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
