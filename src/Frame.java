@@ -1,3 +1,5 @@
+import panels.ParentPanel;
+
 import javax.swing.*;
 
 public class Frame extends JFrame {
@@ -10,7 +12,7 @@ public class Frame extends JFrame {
         pack();
 
 
-//        TitlePanel p = new TitlePanel();
+//        panels.TitlePanel p = new panels.TitlePanel();
         ParentPanel p = new ParentPanel();
 
 //
