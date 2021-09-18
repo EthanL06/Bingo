@@ -1,7 +1,5 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class TextFileGenerator implements Runnable{
 
@@ -24,12 +22,16 @@ public class TextFileGenerator implements Runnable{
     private void createScheduleFile() {
         try {
             File scheduleFile = new File(filePath, "schedule.txt");
-            FileWriter fw = new FileWriter(scheduleFile);
-            PrintWriter pw = new PrintWriter(fw);
+//            FileWriter fw = new FileWriter(scheduleFile);
 
-            pw.println("SCHEDULE:\n");
-            pw.println(schedule);
-            pw.close();
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(scheduleFile), StandardCharsets.UTF_8);
+            osw.write("SCHEDULE:\n" + schedule);
+            osw.close();
+//            PrintWriter pw = new PrintWriter(osw);
+//
+//            pw.println("SCHEDULE:\n");
+//            pw.println(schedule);
+//            pw.close();
 
             System.out.println("schedule.txt successfully created.");
 
@@ -41,12 +43,16 @@ public class TextFileGenerator implements Runnable{
     private void createWinnerScheduleFile() {
         try {
             File scheduleFile = new File(filePath, "winners.txt");
-            FileWriter fw = new FileWriter(scheduleFile);
-            PrintWriter pw = new PrintWriter(fw);
 
-            pw.println("WINNERS:\n");
-            pw.println(winnerSchedule);
-            pw.close();
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(scheduleFile), StandardCharsets.UTF_8);
+            osw.write("WINNERS:\n" + winnerSchedule);
+            osw.close();
+//            FileWriter fw = new FileWriter(scheduleFile);
+//            PrintWriter pw = new PrintWriter(fw);
+
+//            pw.println("WINNERS:\n");
+//            pw.println(winnerSchedule);
+//            pw.close();
 
             System.out.println("winners.txt successfully created.");
 

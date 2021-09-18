@@ -69,6 +69,7 @@ public class GameInfoPanel extends JPanel {
 
         Object[] options = null;
         String msg = "";
+        String title = "GAME INFO: ";
 
         switch (page) {
             case 1:
@@ -76,24 +77,25 @@ public class GameInfoPanel extends JPanel {
                 msg = "<h1 style=\"font-family: Verdana, Geneva, sans-serif; padding-top: 0; margin-top: 0;\">Parameters</h1>\r\n"
                 		+ "\r\n"
                 		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif;\">Game Number:&nbsp;<span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + gameNumber + "</span></h3>\r\n"
-                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif;\">Number of cards: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + numOfCards + "</span></h3>\r\n"
-                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of winners: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + numOfWinners + "</span></h3>\r\n"
-                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of days: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + days + "</span></h3>";
-                System.out.println(days);
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif;\">Number of cards: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + numOfCards + " cards</span></h3>\r\n"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of winners: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + numOfWinners + " winners</span></h3>\r\n"
+                		+ "<h3 style=\"font-family: Arial Rounded MT, sans-serif\">Number of days: <span style=\"margin: 0; font-weight: normal; font-size: 1em\">" + days + " days</span></h3>";
+                title += "Parameters (1/3)";
                 break;
             case 2:
                 options = new Object[]{backButton, exitButton, nextButton};
                 msg = "<h1 style=\"font-family: Verdana, Geneva, sans-serif; padding-top: 0; margin-top: 0\">Bingo Ball Sequence:</h1>\n\n" + schedule;
+                title += "Bingo Ball Sequence (2/3)";
                 break;
             case 3:
                 options = new Object[]{backButton, exitButton};
                 msg = "<h1 style=\"font-family: Verdana, Geneva, sans-serif; padding-top: 0; margin-top: 0\">Winners:</h1>\n\n" + winners;
+                title += "Winners (3/3)";
                 break;
         }
 
         JEditorPane textArea = new JEditorPane("text/html", msg);
-        textArea.setEditable(false);
-//        textArea.setFont(textArea.getFont().deriveFont(16f));
+        textArea.setEditable(false);;
         textArea.setCaretPosition(0);
         JScrollPane sp = new JScrollPane(textArea);
         sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -104,7 +106,7 @@ public class GameInfoPanel extends JPanel {
         optionPane.setOptions(options);
 
 
-        dialog = optionPane.createDialog(null, "Game Info (" + page + "/3)");
+        dialog = optionPane.createDialog(null, title);
 
         if (!exit) {
             dialog.setModal(true);
@@ -156,7 +158,7 @@ public class GameInfoPanel extends JPanel {
         int round = 1;
         int seqIndex = 0;
         for (int day = 1; day < days+1; day++) {
-            temp += "<h2 style=\"margin-bottom: 0; font-size: 1.2em\"><strong>DAY " + day + "</strong></h2>\n";
+            temp += "<h2 style=\"font-family: Arial Rounded MT, sans-serif; margin-bottom: 0; font-size: 1.2em\"><strong>DAY " + day + "</strong></h2>\n";
             temp += "<p style=\"font-family: Arial Rounded MT, sans-serif;\"><strong><span style=\"font-size: 1.05em\">AM (ROUND " + round + "):</span></strong>";
 
             // AM Round
@@ -190,7 +192,7 @@ public class GameInfoPanel extends JPanel {
 
         int round = 1;
         for (int day = 1; day <= days; day++) {
-            temp += "<h2 style=\"margin-bottom: 0; font-size: 1.2em\"><strong>DAY " + day + "</strong></h2>\n";
+            temp += "<h2 style=\"font-family: Arial Rounded MT, sans-serif; margin-bottom: 0; font-size: 1.2em\"><strong>DAY " + day + "</strong></h2>\n";
             temp += "<p style=\"font-family: Arial Rounded MT, sans-serif;\"><strong><span style=\"font-size: 1.05em\">AM (ROUND " + round + "):</span></strong>";
 
             // AM Round
