@@ -326,7 +326,7 @@ public class CardPanel extends JPanel {
             String winDay = bingoCard.getWinDay();
             String roundWin = Integer.toString(bingoCard.getRoundWin());
 
-            msg +=  "\n\n" +
+            msg +=  " (" + bingoCard.getWinType() + ")\n\n" +
                     "Day Win:\n" + winDay + "\n\n" +
                     "Round Win:\nRound " + roundWin;
         }

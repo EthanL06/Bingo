@@ -16,6 +16,7 @@ public class BingoCard {
     private int roundWin;
     private int amountToWin; // the number of bingo balls called before card wins
     private String winDay;
+    private String winType;
 
     public BingoCard(int id) {
         this.id = id;
@@ -27,6 +28,7 @@ public class BingoCard {
         roundWin = -1;
         amountToWin = -1;
         winDay = null;
+        winType = null;
 
         fillCard();
     }
@@ -91,6 +93,7 @@ public class BingoCard {
             }
 
             if (win) {
+                winType = "Horizontal";
                 isWinner = true;
                 return true;
             }
@@ -109,6 +112,7 @@ public class BingoCard {
             }
 
             if (win) {
+                winType = "Vertical";
                 isWinner = true;
                 return true;
             }
@@ -125,6 +129,7 @@ public class BingoCard {
         }
 
         if (win) {
+            winType = "Diagonal";
             isWinner = true;
             return true;
         }
@@ -141,10 +146,15 @@ public class BingoCard {
         }
 
         if (win) {
+            winType = "Diagonal";
             isWinner = true;
         }
 
         return win;
+    }
+
+    public String getWinType() {
+        return winType;
     }
 
     public void setFilePath(String filePath) {
