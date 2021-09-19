@@ -4,20 +4,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Card that holds the data of a single bingo card
+ */
 public class BingoCard {
 
     private final int id;
-    private String filePath;
-    private final int[][] card;
-    private int[][] displayCard;
-    private final HashMap<Integer, Coordinate> squares;
-    private final HashSet<Coordinate> chosenSquares;
+    private String filePath; // The file path to open the card's PNG file
+    private final int[][] card; // Matrix that holds all the numbers of the card; changes depending on which numbers are marked
+    private int[][] displayCard; // Matrix that holds all the numbers of the card; doesn't change
+    private final HashMap<Integer, Coordinate> squares; // Holds all the bingo numbers and their corresponding coordinate on the matrix
+    private final HashSet<Coordinate> chosenSquares; // Set of all the coordinates that have been chosen; used in marking the bingo numbers
     private boolean isWinner;
     private int roundWin;
-    private int amountToWin; // the number of bingo balls called before card wins
+    private int amountToWin; // The number of bingo balls that need to be called for the card to win
     private String winDay;
-    private String winType;
+    private String winType; // Diagonal, Horizontal, Vertical
 
+    /***
+     * Sets initial values of instance variables
+     * @param id the ID of the bingo card
+     */
     public BingoCard(int id) {
         this.id = id;
         this.filePath = null;
@@ -33,6 +40,9 @@ public class BingoCard {
         fillCard();
     }
 
+    /***
+     * Generates the bingo card's board numbers
+     */
     private void fillCard() {
         int min = 1;
         int max = 16;
@@ -60,13 +70,17 @@ public class BingoCard {
             max += 15;
         }
 
-        // 0 = Free space
-//        card[2][2] = 0;
         Coordinate freeSpace = new Coordinate(2, 2);
         chosenSquares.add(freeSpace);
         displayCard = Arrays.stream(card).map(int[]::clone).toArray(int[][]::new);  // clones card array to displayCard
     }
 
+
+    /***
+     * Checks if the called bingo number is found within the card
+     * @param number The called bingo number
+     * @return True if number is found in the card, else False
+     */
     public boolean chooseNumber(int number) {
         if (squares.containsKey(number)) {
             Coordinate coordinate = squares.get(number);
@@ -78,6 +92,10 @@ public class BingoCard {
         return false;
     }
 
+    /***
+     * Checks if the card has won
+     * @return True if the card wins, else False
+     */
     public boolean checkWin() {
         // Check each row
 

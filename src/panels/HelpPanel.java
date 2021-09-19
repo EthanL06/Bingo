@@ -18,13 +18,20 @@ public class HelpPanel {
     	showDialog(1);
     }
 
+    /**
+     * Sets the ActionListeners of the dialog buttons and shows the selected page of the dialog
+     */
     public static void showDialog(int pageNum) {
         page = pageNum;
         exit = false;
         setListeners();
         changePage(page);
     }
-    
+
+    /**
+     * Changes the page of the dialog to the specified page
+     * @param page The page number
+     */
     private static void changePage(int page) {
 
         Object[] options = null;
@@ -110,7 +117,10 @@ public class HelpPanel {
         }
 
     }
-    
+
+    /**
+     * Sets the ActionListeners of the buttons of the dialog
+     */
     private static void setListeners() {
         backButton.addActionListener(new ActionListener() {
             @Override

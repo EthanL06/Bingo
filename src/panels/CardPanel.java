@@ -42,14 +42,15 @@ public class CardPanel extends JPanel {
         parentPanel.add(this, "card");
     }
 
+    /**
+     * Creates the menu bar on top of the View Card screen
+     */
     private void setMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu cardMenu = new JMenu("Card");
-//        JMenu helpMenu = new JMenu("Help");
 
         cardMenu.setMnemonic(KeyEvent.VK_C);
-//        helpMenu.setMnemonic(KeyEvent.VK_H);
 
         JMenuItem openItem = new JMenuItem("Open");
         JMenuItem infoItem = new JMenuItem("Info");
@@ -190,23 +191,6 @@ public class CardPanel extends JPanel {
             }
         });
 
-//        helpMenu.addMenuListener(new MenuListener() {
-//            @Override
-//            public void menuSelected(MenuEvent e) {
-//                panels.HelpPanel.showDialog(3);
-//            }
-//
-//            @Override
-//            public void menuDeselected(MenuEvent e) {
-//
-//            }
-//
-//            @Override
-//            public void menuCanceled(MenuEvent e) {
-//
-//            }
-//        });
-
         cardMenu.add(openItem);
         cardMenu.add(infoItem);
         markerItems[0] = toggleMarkersItem;
@@ -227,6 +211,9 @@ public class CardPanel extends JPanel {
         add(menuBar, BorderLayout.NORTH);
     }
 
+    /**
+     * Creates the popup menu when the user right-clicks the View Card screen
+     */
     private void setPopupMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
 
@@ -315,6 +302,9 @@ public class CardPanel extends JPanel {
         });
     }
 
+    /**
+     * Creates the dialog that displays the card info
+     */
     private void cardInfoDialog() {
         String cardID = String.format("%06d", bingoCard.getID());
         String isWinner = bingoCard.isWinner() ? "Yes" : "No";
@@ -338,6 +328,13 @@ public class CardPanel extends JPanel {
         this.bingoCard = card;
     }
 
+    /**
+     * Handles user-input errors
+     * @param input The number the user inputted
+     * @param max The max number the user can input
+     * @param changePanel The panel that the user switches to if an error occurs
+     * @return True if the input is valid, else False
+     */
     private boolean checkInput(int input, int max, String changePanel) {
         if (input <= 0 || input > max) {
             JOptionPane.showMessageDialog(null, "Invalid Input.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -348,6 +345,10 @@ public class CardPanel extends JPanel {
         return true;
     }
 
+    /**
+     * Handles the toggle markers icon. If the markers are shown on screen, the icon is shown, else the icon is hidden
+     * @param icon The toggle markers icon
+     */
     private void toggleMarkers(ImageIcon icon) {
         toggleMarkers = !toggleMarkers;
 
@@ -372,6 +373,11 @@ public class CardPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws the card's ID on the top left
+     * @param g Reference to panel's Graphics object
+     * @param id The card's ID
+     */
     private void drawID(Graphics g, int id) {
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         String formattedID = "#" + String.format("%06d", id);
@@ -382,7 +388,10 @@ public class CardPanel extends JPanel {
         g.drawString(formattedID, x, y);
     }
 
-
+    /**
+     * Fills in the numbers of the selected card
+     * @param g Reference to the panel's Graphics object
+     */
 
     private void fillCard(Graphics g) {
 
@@ -418,6 +427,13 @@ public class CardPanel extends JPanel {
         }
     }
 
+    /**
+     * Draws a centered string within a rectangle
+     * @param g Reference to BufferedImage's Graphics object
+     * @param text The text drawn onto the file
+     * @param rect The rectangle where the text will be centered in
+     * @param font The font of the text
+     */
     private void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);

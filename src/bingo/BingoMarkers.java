@@ -3,14 +3,21 @@ package bingo;
 import java.awt.*;
 import java.util.HashSet;
 
+/**
+ * Marks the bingo cards with a red circle
+ */
 public class BingoMarkers {
 
-    private final HashSet<Coordinate> squares;
+    private final HashSet<Coordinate> squares; // the coordinates of all the marked numbers
 
     public BingoMarkers(HashSet<Coordinate> squares) {
         this.squares = squares;
     }
 
+    /**
+     * Draws the markers to the card's corresponding marked numbers
+     * @param g Reference to the JPanel's Graphics object
+     */
     public void drawMarkers(Graphics g) {
         int width = 186;
         int height = 143;

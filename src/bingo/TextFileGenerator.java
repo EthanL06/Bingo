@@ -15,12 +15,18 @@ public class TextFileGenerator implements Runnable{
         this.winnerSchedule = winnerSchedule;
     }
 
+    /**
+     * Creates the schedule.txt file and the winners.txt file
+     */
     @Override
     public void run() {
         createScheduleFile();
         createWinnerScheduleFile();
     }
 
+    /**
+     * Creates the schedule.txt file
+     */
     private void createScheduleFile() {
         try {
             File scheduleFile = new File(filePath, "schedule.txt");
@@ -29,11 +35,6 @@ public class TextFileGenerator implements Runnable{
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(scheduleFile), StandardCharsets.UTF_8);
             osw.write("SCHEDULE:\n" + schedule);
             osw.close();
-//            PrintWriter pw = new PrintWriter(osw);
-//
-//            pw.println("SCHEDULE:\n");
-//            pw.println(schedule);
-//            pw.close();
 
             System.out.println("schedule.txt successfully created.");
 
@@ -42,6 +43,9 @@ public class TextFileGenerator implements Runnable{
         }
     }
 
+    /**
+     * Creates the winners.txt file
+     */
     private void createWinnerScheduleFile() {
         try {
             File scheduleFile = new File(filePath, "winners.txt");
@@ -49,12 +53,6 @@ public class TextFileGenerator implements Runnable{
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(scheduleFile), StandardCharsets.UTF_8);
             osw.write("WINNERS:\n" + winnerSchedule);
             osw.close();
-//            FileWriter fw = new FileWriter(scheduleFile);
-//            PrintWriter pw = new PrintWriter(fw);
-
-//            pw.println("WINNERS:\n");
-//            pw.println(winnerSchedule);
-//            pw.close();
 
             System.out.println("winners.txt successfully created.");
 

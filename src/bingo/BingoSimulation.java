@@ -5,24 +5,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Simulates a bingo game
+ */
+
 public class BingoSimulation {
 
     private final int days;
     private final int maxWinners;
     private final int seed;
     private final int numOfCards;
-    private final HashMap<Integer, BingoCard> cards;
-    private final HashSet<Integer> chosenBalls;
-    private final ArrayList<Integer> balls;
-    private final ArrayList<BingoCard> winners;
-    private ArrayList<ArrayList<Integer>> winnersAM;
-    private ArrayList<ArrayList<Integer>> winnersPM;
+    private final HashMap<Integer, BingoCard> cards; // HashMap of all the bingo cards that will be simulated. The key is the card's ID
+    private final HashSet<Integer> chosenBalls; // Set of all the bingo balls that have been called
+    private final ArrayList<Integer> balls; // ArrayList of all the bingo balls that have been called
+    private final ArrayList<BingoCard> winners; // ArrayList of all bingo card winners
+    private ArrayList<ArrayList<Integer>> winnersAM; // ArrayList of all the winners that won in AM
+    private ArrayList<ArrayList<Integer>> winnersPM; // ArrayList of all the winners that won in PM
     private final BingoCard[] printCards; // array of BingoCards that will be used to generate bingo card files
-    private int[][] schedule;
-    private String winnerSchedule;
+    private int[][] schedule; // Matrix of how many bingo balls will be called each round
+    private String winnerSchedule; // Schedule matrix turned into a string with some formatting
     private volatile boolean isSimComplete;
     private boolean hasStopped;
 
+    /**
+     * Generates all bingo cards and starts the bingo simulation
+     * @param seed Determines the sequence of randomly generated numbers
+     * @param numOfCards The number of bingo cards to be generated
+     * @param days The number of days that the bingo game will be played
+     * @param maxWinners The number of winners the bingo game will have
+     */
     public BingoSimulation(int seed, int numOfCards, int days, int maxWinners) {
 
         this.days = days;
@@ -49,6 +60,10 @@ public class BingoSimulation {
 
         simulate();
     }
+
+    /**
+     * The simulation of the bingo game. Will call the bingo ball numbers as well as check for winning bingo cards
+     */
 
     private void simulate() {
         System.out.println("Simulating...");
@@ -88,6 +103,10 @@ public class BingoSimulation {
         isSimComplete = true;
     }
 
+    /**
+     * Calls the bingo number to be marked on bingo cards
+     * @return The called bingo number
+     */
     private int callBingoNumber() {
         if (chosenBalls.size() >= 75) {
             return -1;
@@ -118,6 +137,9 @@ public class BingoSimulation {
         return balls;
     }
 
+    /**
+     * Determines the amount of bingo balls called per round and fills in the schedule matrix
+     */
     private void setSchedule() {
         int rounds = days * 2;
         int basePerRound = balls.size() / rounds;  // the base amount of balls called per day
@@ -150,6 +172,11 @@ public class BingoSimulation {
     }
 
 
+    /**
+     * Takes the schedule matrix and turns it into a formatted String.
+     * Used in schedule.txt
+     * @return The schedule string
+     */
     public String getScheduleString() {
         String outerBorder = "﹍﹍﹍" + generateBorder("﹍﹍﹍﹍﹍﹍");
         String innerBorder = "\n┊┅┅┅┅┅" + generateBorder("┅┅┅┅┅┅┅┅┅┅┅") + "┊\n";
@@ -206,6 +233,9 @@ public class BingoSimulation {
         return scheduleString;
     }
 
+    /**
+     * Lists out all the bingo cards that have won and when they will win
+     */
     private void setWinnerSchedule() {
         winnersAM = new ArrayList<>(days);
         winnersPM = new ArrayList<>(days);
@@ -318,6 +348,4 @@ public class BingoSimulation {
     public int getDays() {
         return days;
     }
-
-
 }

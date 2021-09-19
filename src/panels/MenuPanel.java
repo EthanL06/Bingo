@@ -30,6 +30,14 @@ public class MenuPanel extends JPanel {
         gameInfoPanel = new GameInfoPanel(bingoParent.getSimulation());
     }
 
+    /**
+     * Creates and shows the dialogs where the user inputs the parameters needed for the bingo simulation:
+     * Game number,
+     * Number of bingo cards,
+     * Number of days,
+     * Number of winners,
+     * File path to store generated files
+     */
     private void askPrompts() {
         String input = "";
         int gameNumber;
@@ -100,6 +108,10 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the graphics of the Game Menu screen
+     * @param filePath The file path of where the generated files are located
+     */
     private void setGraphics(String filePath) {
         setLayout(new BorderLayout());
         color = new Color(230, 69, 69);
@@ -123,6 +135,10 @@ public class MenuPanel extends JPanel {
         add(imagePanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Sets the title image of the Game Menu panel
+     * @param imagePanel Reference to the JPanel where the image will be in
+     */
     private void setImage(JPanel imagePanel) {
 
         ImageIcon menuImageIcon = null;
@@ -143,6 +159,11 @@ public class MenuPanel extends JPanel {
         imagePanel.setBackground(color);
     }
 
+    /**
+     * Sets the three buttons in the Game Menu panel: Open Directory, View Card, and Game Info
+     * @param filePath The file path of where the generated files are stored
+     * @param buttonPanel Reference to the JPanel where the buttons will be in
+     */
     private void setButtons(String filePath, JPanel buttonPanel) {
 
         JButton openDirectory = createButton("OPEN DIRECTORY");
@@ -208,6 +229,11 @@ public class MenuPanel extends JPanel {
         });
     }
 
+    /**
+     * Creates a Game Menu button
+     * @param text Button text
+     * @return The created JButton
+     */
     private JButton createButton(String text) {
         JButton b = new JButton(text);
         Border border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2), BorderFactory.createEmptyBorder(20, 10, 20, 10));
@@ -222,10 +248,22 @@ public class MenuPanel extends JPanel {
         return b;
     }
 
+    /**
+     * Creates the dialog that takes in the user's input
+     * @param message The message of the dialog
+     * @return The user's input
+     */
     private String getInput(String message) {
         return JOptionPane.showInputDialog(null, message, "Parameter Selection", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Handles user input errors
+     * @param input The user input
+     * @param max The max number the user can input
+     * @param changePanel The panel that the program changes to if an error occurs
+     * @return True if the input is valid, else False
+     */
     private boolean checkInput(int input, int max, String changePanel) {
         if (input <= 0 || input > max) {
             JOptionPane.showMessageDialog(null, "Invalid Input.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -236,6 +274,10 @@ public class MenuPanel extends JPanel {
         return true;
     }
 
+    /**
+     * Gets the user selected directory where the generated files will be stored
+     * @return The file directory string
+     */
     private String getFileInput() {
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File

@@ -6,10 +6,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Class that generates bingo card PNG files
+ */
 public class BingoCardFileGenerator implements Runnable {
 
-    private final String filePath;
-    private final BingoCard[] cards;
+    private final String filePath;  // file path of where the generated PNG files will be stored
+    private final BingoCard[] cards; // array of all BingoCard objects
     private BufferedImage cardImage;
     private final int cardWidth;
     private final int cardHeight;
@@ -29,6 +32,9 @@ public class BingoCardFileGenerator implements Runnable {
         }
     }
 
+    /**
+     * Creates folder where PNG files will be stored and creates a PNG file for every 4th card
+     */
     @Override
     public void run() {
         createFolder();
@@ -46,6 +52,11 @@ public class BingoCardFileGenerator implements Runnable {
         printCard(startingID, 4);
     }
 
+    /**
+     *
+     * @param startingID the starting ID for the file; used in drawing the IDs onto the PNG file and in the title of the file
+     * @param amount the number of bingo cards that will be drawn to the file
+     */
     private void printCard(int startingID, int amount) {
         BufferedImage image = new BufferedImage(2550, 3330, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
@@ -79,6 +90,11 @@ public class BingoCardFileGenerator implements Runnable {
         createFile(fileName, image);
     }
 
+    /**
+     * Fills in the numbers of all the bingo cards
+     * @param g Reference to Graphics object of the BufferedImage
+     * @param amount The number of bingo cards on the file
+     */
     private void fillCards(Graphics g, int amount) {
         int width = 234;
         int height = 236;
@@ -174,6 +190,13 @@ public class BingoCardFileGenerator implements Runnable {
         }
     }
 
+    /**
+     * Draws a centered string within a rectangle
+     * @param g Reference to BufferedImage's Graphics object
+     * @param text The text drawn onto the file
+     * @param rect The rectangle where the text will be centered in
+     * @param font The font of the text
+     */
     private void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
@@ -188,6 +211,12 @@ public class BingoCardFileGenerator implements Runnable {
         g.drawString(text, x, y);
     }
 
+    /**
+     * Draws the ID of a bingo card
+     * @param g Reference to the BufferedImage's Graphics object
+     * @param id The ID of the bingo card
+     * @param quadrant Indicates which card to draw the ID on; 1: top-left, 2: top-right, 3: bottom-left, 4: bottom-right
+     */
     private void drawID(Graphics g, int id, int quadrant) {
         g.setFont(new Font("TimesRoman", Font.BOLD, 35));
         String formattedID = "#" + String.format("%06d", id);
@@ -213,7 +242,9 @@ public class BingoCardFileGenerator implements Runnable {
         }
     }
 
-    // Creates folder "Bingo Cards" in selected folder
+    /**
+     * Creates the Cards subdirectory of the user selected folder
+     */
     private void createFolder() {
         File folder = new File(filePath);
 
@@ -228,6 +259,11 @@ public class BingoCardFileGenerator implements Runnable {
         }
     }
 
+    /**
+     * Creates the PNG file of the bingo cards
+     * @param fileName The name of the generated file
+     * @param image The image that will be used to generate the PNG
+     */
     private void createFile(String fileName, BufferedImage image) {
         try {
             String path = filePath + "/" + fileName + ".png";
@@ -238,6 +274,12 @@ public class BingoCardFileGenerator implements Runnable {
         }
     }
 
+    /**
+     * Sets the file path to open the card. Sets the file path of bingo cards between ID start and end.
+     * @param start The starting ID of the file
+     * @param end The ending ID of the file
+     * @param fileName The file name of the cards
+     */
     private void setCardsFilePath(int start, int end, String fileName) {
         for (int i = start-1; i <= end-1; i++) {
             cards[i].setFilePath(filePath + "\\" + fileName + ".png");

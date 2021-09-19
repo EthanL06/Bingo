@@ -33,22 +33,6 @@ public class GameInfoPanel extends JPanel {
         numOfWinners = simulation.getMaxWinners();
         days = simulation.getDays();
 
-//        String temp = simulation.getScheduleString();
-//        String winnerTemp = simulation.getWinnerSchedule();
-
-//        temp = temp.substring(temp.indexOf("DAY 1", temp.indexOf("DAY 1") + 1));
-//
-//        temp = temp.replaceAll("﹉", "");
-//        temp = temp.replaceAll("┊", "");
-//        temp = temp.replaceAll("┅", "");
-//        temp = temp.replaceAll("﹍", "");
-//        temp = temp.replaceAll("\n\n\n\n", "\n");
-
-//        winnerTemp = winnerTemp.replaceAll("﹍", "");
-//        winnerTemp = winnerTemp.replaceAll("\n\n", "\n");
-//        winners = winnerTemp.replaceFirst("\n", "");
-//        schedule = temp;
-
         formatSchedule(simulation.getBingoBalls(), simulation.getSchedule());
         formatWinners(simulation.getWinnersAM(), simulation.getWinnersPM());
 
@@ -62,6 +46,9 @@ public class GameInfoPanel extends JPanel {
         page = 1;
     }
 
+    /**
+     * Sets the ActionListeners of the dialog buttons and shows the first page of the dialog
+     */
     public void showDialog() {
         page = 1;
         exit = false;
@@ -69,6 +56,13 @@ public class GameInfoPanel extends JPanel {
         changePage(page);
     }
 
+    /**
+     * Changes the dialog to the page number
+     * Page 1: Parameters
+     * Page 2: Bingo Ball Sequence
+     * Page 3: Winners
+     * @param page The page number
+     */
     private void changePage(int page) {
 
         Object[] options = null;
@@ -119,6 +113,9 @@ public class GameInfoPanel extends JPanel {
 
     }
 
+    /**
+     * Sets the ActionListeners of the buttons of the dialog
+     */
     private void setListeners() {
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -155,6 +152,11 @@ public class GameInfoPanel extends JPanel {
         });
     }
 
+    /**
+     * Formats the sequence ArrayList with HTML to list the called bingo ball numbers each round
+     * @param sequence The order of called bingo balls
+     * @param ballSchedule Matrix that contains how many bingo balls are called each round
+     */
     private void formatSchedule(ArrayList<Integer> sequence, int[][] ballSchedule) {
         String temp = "";
 
@@ -191,6 +193,11 @@ public class GameInfoPanel extends JPanel {
         schedule = temp;
     }
 
+    /**
+     * Formats the winnersAM and winnersPM ArrayLists with HTML to list out the winners of each round
+     * @param winnersAM The winners that won in AM or every odd round
+     * @param winnersPM The winners that won in PM or every even round
+     */
     private void formatWinners(ArrayList<ArrayList<Integer>> winnersAM, ArrayList<ArrayList<Integer>> winnersPM) {
         String temp = "";
 

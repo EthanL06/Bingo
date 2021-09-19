@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Parent class of BingoSimulation and BingoCards
+ */
 public class BingoParent {
 
     private final BingoSimulation simulation;
@@ -20,6 +23,11 @@ public class BingoParent {
         startThreads(filePath);
     }
 
+    /**
+     * Starts thee threads that allow the program to simultaneously generate the .txt files and the PNG files
+     * as well as the panel indicating that the files are being generated
+     * @param filePath The user selected file path where generated files will be stored
+     */
     private void startThreads(String filePath) {
 
         System.out.println("Reached start threads");

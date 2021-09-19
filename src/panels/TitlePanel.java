@@ -7,12 +7,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TitlePanel extends JPanel {
 
-    /*
-    Class that displays the title screen of the application
-    Has two buttons: Start and Help
-     */
+/**
+ * Displays the title screen
+ * Has two buttons: Start and Help
+ */
+
+public class TitlePanel extends JPanel {
 
     private final ParentPanel parentPanel;
 
@@ -25,6 +26,9 @@ public class TitlePanel extends JPanel {
         setGraphics();
     }
 
+    /**
+     * Sets Graphics of the title panel
+     */
     private void setGraphics() {
         JPanel centerPanel = new JPanel(new GridBagLayout());
         JPanel imagePanel = new JPanel(new GridBagLayout());
@@ -59,6 +63,11 @@ public class TitlePanel extends JPanel {
         add(imagePanel, BorderLayout.NORTH);
     }
 
+    /**
+     * Creates the buttons of the title panel
+     * @param text The text of the button
+     * @param panel The JPanel where the buttons are put in
+     */
     private void createButton(String text, JPanel panel) {
         JButton b = new JButton(text);
         b.setBackground(new Color(214, 40, 40));
@@ -88,6 +97,10 @@ public class TitlePanel extends JPanel {
         panel.add(b);
     }
 
+    /**
+     * Gets the title image for the title panel
+     * @return An ImageIcon of the title image
+     */
     private ImageIcon getTitleImage() {
         try {
             return new ImageIcon(ImageIO.read(TitlePanel.class.getResource("/images/title.png")));

@@ -4,12 +4,11 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 
+/**
+ * Class that holds all JPanels under a CardLayout
+ * Allows program to switch between multiple JPanels without having to do all of it under a single paint method
+ */
 public class ParentPanel extends JPanel {
-
-    /*
-    Class that holds all JPanels under a CardLayout
-    Allows to switch between multiple JPanels
-     */
 
     private final TitlePanel titlePanel;
     private final HelpPanel helpPanel;
@@ -39,6 +38,11 @@ public class ParentPanel extends JPanel {
         title, help, menu, card, game info
      */
 
+    /**
+     * Changes the JPanel.
+     * Panel Names: title, menu, card
+     * @param panelName The name of the JPanel
+     */
     public void changePanel(String panelName) {
         System.out.println("Moving to " + panelName);
         cl.show(this, panelName.toLowerCase());
