@@ -142,10 +142,12 @@ public class MenuPanel extends JPanel {
     private void setImage(JPanel imagePanel) {
 
         ImageIcon menuImageIcon = null;
-        Border border = BorderFactory.createEmptyBorder(200, 0, 100, 0);
+        Border border = BorderFactory.createEmptyBorder(100, 0, 100, 0);
 
         try {
             menuImageIcon = new ImageIcon(ImageIO.read(MenuPanel.class.getResource("/images/menu.png")));
+            Image tempImage = menuImageIcon.getImage().getScaledInstance(700, (int)(menuImageIcon.getIconHeight()/1.25), Image.SCALE_SMOOTH);
+            menuImageIcon = new ImageIcon(tempImage);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -236,7 +238,7 @@ public class MenuPanel extends JPanel {
      */
     private JButton createButton(String text) {
         JButton b = new JButton(text);
-        Border border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2), BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        Border border = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2), BorderFactory.createEmptyBorder(40, 30, 40, 30));
         b.setBackground(new Color(214, 40, 40));
         b.setForeground(Color.WHITE);
         b.setFocusPainted(false);

@@ -13,7 +13,14 @@ public class Frame extends JFrame {
 
         add(p);
         pack();
-//        setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+//        if (screenSize.getHeight() < 1000) {
+//            setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        } else {
+//            setPreferredSize(new Dimension(1000, 1000));
+//        }
+
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);

@@ -3,6 +3,7 @@ package panels;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ public class TitlePanel extends JPanel {
     public TitlePanel(ParentPanel parentPanel) {
         this.parentPanel = parentPanel;
 
-        setPreferredSize(new Dimension(1000, 1000));
+        setPreferredSize(new Dimension(700, 700));
         setLayout(new BorderLayout());
 
         setGraphics();
@@ -37,7 +38,7 @@ public class TitlePanel extends JPanel {
 
         Color color = new Color(230, 69, 69);
 
-        Border border = BorderFactory.createEmptyBorder(200, 0, 100, 0);
+        Border border = BorderFactory.createEmptyBorder(100, 0, 100, 0);
         Border border2 = BorderFactory.createEmptyBorder(0, 0, 300, 0);
 
         title.setIcon(getTitleImage());
@@ -70,14 +71,15 @@ public class TitlePanel extends JPanel {
      */
     private void createButton(String text, JPanel panel) {
         JButton b = new JButton(text);
+        CompoundBorder border = new CompoundBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2), BorderFactory.createEmptyBorder(30, 20, 30, 20));
         b.setBackground(new Color(214, 40, 40));
         b.setForeground(Color.WHITE);
         b.setFocusPainted(false);
-        b.setBorder(BorderFactory.createLineBorder(new Color(125, 31, 31), 2));
+        b.setBorder(border);
         b.setAlignmentX(JButton.CENTER_ALIGNMENT);
         b.setAlignmentY(JButton.CENTER_ALIGNMENT);
-        b.setFont(new Font("Gill Sans MT", Font.BOLD, 38));
-
+        b.setFont(new Font("Gill Sans MT", Font.BOLD, 45));
+        b.setMargin(new Insets(1, 1,1, 1));
         if (text.equalsIgnoreCase("start")) {
             b.addActionListener(new ActionListener() {
                 @Override
@@ -103,7 +105,9 @@ public class TitlePanel extends JPanel {
      */
     private ImageIcon getTitleImage() {
         try {
-            return new ImageIcon(ImageIO.read(TitlePanel.class.getResource("/images/title.png")));
+            ImageIcon icon = new ImageIcon(ImageIO.read(TitlePanel.class.getResource("/images/title.png")));
+            Image tempImage = icon.getImage().getScaledInstance(700, (int)(icon.getIconHeight()/1.25), Image.SCALE_SMOOTH);
+            return new ImageIcon(tempImage);
         } catch (Exception e) {
             System.out.println(e);
         }

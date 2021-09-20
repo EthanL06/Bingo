@@ -29,7 +29,7 @@ public class CardPanel extends JPanel {
         toggleMarkers = false;
 
         try {
-            cardImage = ImageIO.read(CardPanel.class.getResource("/images/card.png"));
+            cardImage = ImageIO.read(CardPanel.class.getResource("/images/card_2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -360,7 +360,7 @@ public class CardPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(cardImage, 0, 0, 1000, 1000, null);
+        g.drawImage(cardImage, 0, 0, 700, 700, null);
 
         if (bingoCard != null) {
             fillCard(g);
@@ -382,10 +382,10 @@ public class CardPanel extends JPanel {
         g.setFont(new Font("TimesRoman", Font.BOLD, 25));
         String formattedID = "#" + String.format("%06d", id);
 
-        final int x = 60;
-        final int y = 47;
+        final int x = 43;
+        final int y = 145;
 
-        g.drawString(formattedID, x, y);
+        g.drawString("ID: " + formattedID, x, y);
     }
 
     /**
@@ -397,33 +397,59 @@ public class CardPanel extends JPanel {
 
         // 182 164
 
-        int width = 186;
-        int height = 143;
-        int x = 12;
-        int y = 225;
-        int verticalBorder = 12;
-        int horizontalBorder = 11;
+        int width = 130;
+        int height = 102;
+        int x = 8;
+        int y = 155;
+        int verticalBorder = 9;
+        int horizontalBorder = 10;
 
         g.setColor(Color.BLACK);
 
-        Font font = g.getFont().deriveFont(Font.BOLD, 150);
+        Font font = g.getFont().deriveFont(Font.BOLD, 100);
 
         int[][] card = bingoCard.getCard();
 
         for (int col = 0; col < card[0].length; col++) {
-            for (int[] row : card) {
+            for (int row = 0; row < card.length; row++) {
+                switch(row) {
+                    case 0:
+                        height = 103;
+                        break;
+                    case 1:
+                        height = 104;
+                        break;
+                    case 2:
+                        height = 100;
+                        break;
+                    case 3: case 4:
+                        height = 98;
+                        break;
+                }
 
-                if (row[col] != 0) {
+                if (card[row][col] != 0) {
                     Rectangle rect = new Rectangle(x, y, width, height);
 //                    g.drawRect(rect.x, rect.y, rect.width, rect.height);
-                    drawCenteredString(g, Integer.toString(row[col]), rect, font);
+                    drawCenteredString(g, Integer.toString(card[row][col]), rect, font);
+                }
+
+                switch(col) {
+                    case 0: case 5:
+                        width = 129;
+                        break;
+                    case 1: case 3:
+                        width = 130;
+                        break;
+                    case 2:
+                        width = 128;
+                        break;
                 }
 
                 y += height + verticalBorder;
             }
 
             x += width + horizontalBorder;
-            y = 225;
+            y = 155;
         }
     }
 
